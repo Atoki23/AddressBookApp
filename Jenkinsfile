@@ -13,7 +13,7 @@ pipeline {
     stages {
     stage('1. Git Checkout') {
       steps {
-        git branch: 'release', credentialsId: 'github_pat', url: 'https://github.com/Atoki23/my_addressbook.git' 
+        git branch: 'main', credentialsId: 'github_pat', url: 'https://github.com/Atoki23/AddressBookApp.git' 
       }
     }
     stage('2. Build with Maven') { 
