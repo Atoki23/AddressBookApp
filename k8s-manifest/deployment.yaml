@@ -2,21 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: gateway
-  name: addressbook-app
+  name: addressbook
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: addressbook-app
+      app: addressbook
   template:
     metadata:
-      name: addressbook-app
+      name: addressbook
       labels:
-        app: addressbook-app
+        app: addressbook
     spec:
       containers:
-      - name: addressbook-app-container
-        image: 999568710647.dkr.ecr.us-west-2.amazonaws.com/addressbook-app:1.36.0
+      - name: addressbook
+        image: 891377107358.dkr.ecr.eu-west-2.amazonaws.com/addressbook:1.7.0
         ports:
         - containerPort: 8080
         readinessProbe:

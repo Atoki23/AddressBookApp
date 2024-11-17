@@ -1,19 +1,19 @@
 pipeline {
-    agent { node { label "maven-sonarqube-node" } }   
+    agent { node { label "jenkins_cicd_slave" } }   
     parameters {
-      choice(name: 'aws_account',choices: ['999568710647', '4568366404742', '922266408974','576900672829'], description: 'aws account hosting image registry')
+      choice(name: 'aws_account',choices: ['891377107358', '4568366404742', '922266408974','576900672829'], description: 'aws account hosting image registry')
       choice(name: 'Environment', choices: ['Dev', 'QA', 'UAT', 'Prod'], description: 'Target environment for deployment')
-      string(name: 'ecr_tag', defaultValue: '1.36.0', description: 'Assign the ECR tag version for the build')
+      string(name: 'ecr_tag', defaultValue: '1.7.0', description: 'Assign the ECR tag version for the build')
     }
 
     tools {
-      maven "Maven-3.9.8"
+      maven "maven-3.9.9"
     }
 
     stages {
     stage('1. Git Checkout') {
       steps {
-        git branch: 'mongodb-integration', credentialsId: 'Github-pat', url: 'https://github.com/ndiforfusi/AddressBookApp.git'
+        git branch: 'release', credentialsId: 'github_pat', url: 'https://github.com/Atoki23/my_addressbook.git' 
       }
     }
     stage('2. Build with Maven') { 
@@ -26,12 +26,12 @@ pipeline {
                 scannerHome = tool 'SonarQube-Scanner-6.2.1'
             }
             steps {
-              withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
+              withCredentials([string(credentialsId: 'sonar_token', variable: 'SONAR_TOKEN')]) {
                       sh """
                       ${scannerHome}/bin/sonar-scanner  \
-                      -Dsonar.projectKey=addressbook_app \
-                      -Dsonar.projectName='addressbook-app' \
-                      -Dsonar.host.url=https://sonarqube.dominionsystem.org \
+                      -Dsonar.projectKey=addressbook \
+                      -Dsonar.projectName='addressbook' \
+                      -Dsonar.host.url=http://35.178.195.71:9000 \
                       -Dsonar.token=${SONAR_TOKEN} \
                       -Dsonar.sources=src/main/java/ \
                       -Dsonar.java.binaries=target/classes \
@@ -41,17 +41,36 @@ pipeline {
         }
     stage('4. Docker Image Build') {
       steps {
-          sh "aws ecr get-login-password --region us-west-2 | sudo docker login --username AWS --password-stdin ${aws_account}.dkr.ecr.us-west-2.amazonaws.com"
-          sh "sudo docker build -t addressbook-app ."
-          sh "sudo docker tag addressbook-app:latest ${aws_account}.dkr.ecr.us-west-2.amazonaws.com/addressbook-app:${params.ecr_tag}"
-          sh "sudo docker push ${aws_account}.dkr.ecr.us-west-2.amazonaws.com/addressbook-app:${params.ecr_tag}"
+          sh "aws ecr get-login-password --region eu-west-2 | sudo docker login --username AWS --password-stdin ${params.aws_account}.dkr.ecr.eu-west-2.amazonaws.com"
+          sh "sudo docker build -t addressbook ."
+          sh "sudo docker tag addressbook:latest ${params.aws_account}.dkr.ecr.eu-west-2.amazonaws.com/addressbook:${params.ecr_tag}"
+          sh "sudo docker push ${params.aws_account}.dkr.ecr.eu-west-2.amazonaws.com/addressbook:${params.ecr_tag}"
+          //sh "sudo docker rmi -f $(docker images -q)"  //forcefully remove all Docker images from the system.
       }
     }
+
+//     stage('5.BuildDockerImage'){
+//     sh 'docker build -t gt .'
+//     sh 'docker tag gt atoki23/tesla:gt1'
+//  }
+    
+//  stage('6.BuildDockerImage'){
+//  withCredentials([string(credentialsId: 'DockerHubCredentials', variable: 'DockerHubCredentials')]) {
+//   sh 'docker login -u atoki23 -p ${DockerHubCredentials}'
+//     sh 'docker push atoki23/tesla:gt1'
+
+//     stage('7.RemoveDockerImages'){
+//      sh 'docker rmi -f $(docker images -q)'
+     
+//   }     
+//  }
+//  }
+
 
     stage('5. Application Deployment in EKS') {
       steps {
         kubeconfig(caCertificate: '', credentialsId: 'kubeconfig', serverUrl: '') {
-          sh "kubectl apply -k k8s-manifest"
+          sh "kubectl apply -k manifest"
         }
       }
     }
@@ -60,7 +79,8 @@ pipeline {
       steps {
         kubeconfig(caCertificate: '', credentialsId: 'kubeconfig', serverUrl: '') {
           sh "kubectl apply -k monitoring"
-          sh("""script/install_helm.sh""") 
+         // sh "chmod +x -R script
+         // sh("""script/install_helm.sh""") 
           sh("""script/install_prometheus.sh""") 
         }
       }
@@ -68,19 +88,15 @@ pipeline {
 
     stage('7. Email Notification') {
       steps {
-        mail bcc: 'fusisoft@gmail.com', body: '''Build is Over. Check the application using the URL below:
-         https://address.dominionsystem.org
+        mail bcc: 'oluwaseunatoki1@gmail.com', body: '''Build is Over. Check the application using the URL below:
+         https://app.dominionsystem.org/addressbook-1.0
          Let me know if the changes look okay.
          Thanks,
-         Dominion System Technologies,
-         +1 (313) 413-1477''', 
-         subject: 'Application was Successfully Deployed!!', to: 'fusisoft@gmail.com'
+         Atoktech Nigeria Limited,
+         +44743874984''', 
+         subject: 'Application was Successfully Deployed!!', to: 'oluwaseunatoki1@gmail.com'
       }
     }
   }
 }
-
-
-
-
 

@@ -8,11 +8,11 @@ parameters:
   csi.storage.k8s.io/fstype: xfs
   type: io1
   iopsPerGB: "50"
-  encrypted: "true"
+  encrypted: "true"   
 allowedTopologies:
 - matchLabelExpressions:
   - key: topology.ebs.csi.aws.com/zone
     values:
-    - us-west-2a
-    - us-west-2b
-    - us-west-2c
+    - eu-west-2a
+    - eu-west-2b
+    - eu-west-2c

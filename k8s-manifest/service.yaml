@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: addressbook-app-service
+  name: addressbook-service
   namespace: gateway
 spec:
   selector:
-    app: addressbook-app
+    app: addressbook
   ports:
   - protocol: TCP
     port: 8080
