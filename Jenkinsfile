@@ -26,13 +26,13 @@ pipeline {
                 scannerHome = tool 'SonarQube-Scanner-6.2.1'
             }
             steps {
-              withCredentials([string(credentialsId: 'sonar_token', variable: 'sonar_token')]) {
+              withCredentials([string(credentialsId: 'sonar_token', variable: 'SONAR_TOKEN')]) {
                       sh """
                       ${scannerHome}/bin/sonar-scanner  \
                       -Dsonar.projectKey=addressbook \
                       -Dsonar.projectName='addressbook' \
-                      -Dsonar.host.url=http://35.178.195.71:9000 \
-                      -Dsonar.token=${sonar_token} \
+                      -Dsonar.host.url=http://52.56.222.159 \
+                      -Dsonar.token=${SONAR_TOKEN} \
                       -Dsonar.sources=src/main/java/ \
                       -Dsonar.java.binaries=target/classes \
                      """
