@@ -32,7 +32,7 @@ pipeline {
                       -Dsonar.projectKey=addressbook \
                       -Dsonar.projectName='addressbook' \
                       -Dsonar.host.url=http://35.178.195.71:9000 \
-                      -Dsonar.token=${SONAR_TOKEN} \
+                      -Dsonar.token=${sonar_token} \
                       -Dsonar.sources=src/main/java/ \
                       -Dsonar.java.binaries=target/classes \
                      """
