@@ -5,7 +5,7 @@ FROM tomcat:9.0.96-jdk17
 RUN rm -rf /usr/local/tomcat/webapps/ROOT /usr/local/tomcat/webapps/ROOT.war
 
 # Copy the WAR file from the target directory to Tomcat's webapps directory
-COPY ./target/addressbook-1.0.war /usr/local/tomcat/webapps/ROOT.war
+COPY ./target/addressbook-1.7.0.war /usr/local/tomcat/webapps/ROOT.war
 
 # Ensure that the time zone is set (optional based on your application’s need)
 ENV TZ=UTC
