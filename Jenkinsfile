@@ -191,12 +191,10 @@ stages {
         stage('7. Monitoring Solution Deployment in EKS') {
             steps {
                 withKubeConfig([caCertificate: '', credentialsId: 'kubeconfig', serverUrl: '']) {
-                    try {
+                    
                         sh "kubectl apply -k monitoring"
                         sh "bash script/install_prometheus.sh"
-                    } catch (Exception e) {
-                        error "Monitoring solution deployment failed: ${e.message}"
-                    }
+                    
                 }
             }
         }
