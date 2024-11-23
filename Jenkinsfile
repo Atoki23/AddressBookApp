@@ -119,7 +119,7 @@ pipeline {
 
     environment {
         SCANNER_HOME = tool('SonarQube-Scanner-6.2.1')
-        SONAR_HOST = 'http://18.170.112.12:9000'
+        SONAR_HOST = 'http://18.175.177.241:9000'
         REGISTRY_URL = "${params.aws_account}.dkr.ecr.eu-west-2.amazonaws.com"
     }
     
