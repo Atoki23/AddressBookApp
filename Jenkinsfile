@@ -120,7 +120,8 @@ pipeline {
     environment {
         SCANNER_HOME = tool('SonarQube-Scanner-6.2.1')
         SONAR_HOST = 'http://18.175.177.241:9000'
-        REGISTRY_URL = "${params.aws_account}.dkr.ecr.eu-west-2.amazonaws.com"
+        REGISTRY_URL = "${params.aws_account}public.ecr.aws/g1l3s4x9"
+        
     }
     
 
@@ -157,12 +158,14 @@ stages {
             }
         }
 
+        //aws ecr get-login-password --region eu-west-2 | sudo docker login --username AWS --password-stdin ${REGISTRY_URL}
+
         stage('4. Docker Image Build and Push') {
             steps {
                 script {
                     try {
                         sh """
-                            aws ecr get-login-password --region eu-west-2 | sudo docker login --username AWS --password-stdin ${REGISTRY_URL}
+                            aws ecr-public get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${REGISTRY_URL}
                             sudo docker build -t addressbook .
                             sudo docker tag addressbook:latest ${REGISTRY_URL}/addressbook:${params.ecr_tag}
                             sudo docker push ${REGISTRY_URL}/addressbook:${params.ecr_tag}

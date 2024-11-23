@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: addressbook
-        image: 891377107358.dkr.ecr.eu-west-2.amazonaws.com/addressbook:1.7.0
+        image: 891377107358 public.ecr.aws/g1l3s4x9/addressbook:1.7.0
         ports:
         - containerPort: 8080
         readinessProbe:
