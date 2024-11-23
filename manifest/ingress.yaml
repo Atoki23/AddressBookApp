@@ -1,26 +1,26 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: addressbook-app-ingress
-  namespace: gateway
-  annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:999568710647:certificate/e9822346-ba84-4860-b6b0-fdabd5a22827
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/healthcheck-port: "8080"
-    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health # Adjust if needed
-    alb.ingress.kubernetes.io/success-codes: "200"
-spec:
-  ingressClassName: alb
-  rules:
-  - host: address.dominionsystem.org
-    http:
-      paths:
-      - path: /static/
-        pathType: Prefix
-        backend:
-          service:
-            name: addressbook-app-service
-            port:
-              number: 8080
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: addressbook-app-ingress
+#   namespace: gateway
+#   annotations:
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:999568710647:certificate/e9822346-ba84-4860-b6b0-fdabd5a22827
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+#     alb.ingress.kubernetes.io/target-type: ip
+#     alb.ingress.kubernetes.io/healthcheck-port: "8080"
+#     alb.ingress.kubernetes.io/healthcheck-path: /actuator/health # Adjust if needed
+#     alb.ingress.kubernetes.io/success-codes: "200"
+# spec:
+#   ingressClassName: alb
+#   rules:
+#   - host: address.dominionsystem.org
+#     http:
+#       paths:
+#       - path: /static/
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: addressbook-app-service
+#             port:
+#               number: 8080
