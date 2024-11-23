@@ -176,7 +176,7 @@ stages {
 
         stage('5. Clean Up Docker Images') {
             steps {
-                sh "sudo docker rmi -f \$(sudo docker images -q)" //Without the backslash, Jenkins would attempt to resolve $() as a Groovy variable or syntax, which would cause errors.
+                sh "sudo docker rmi -f \$(sudo docker images -q)" //Without the backslash, Jenkins would attempt to resolve $() as a Groovy variable or syntax, which would cause error.
             }
         }
 
