@@ -69,26 +69,26 @@
 //       steps {
 //         withkubeconfig([caCertificate: '', credentialsId: 'kubeconfig', serverUrl: '']) {
 //           sh "kubectl apply -k monitoring"
-//          // sh "chmod +x -R script
-//          // sh("""script/install_helm.sh""") 
+//           sh "chmod +x -R script
+//           sh("""script/install_helm.sh""") 
 //           sh("""script/install_prometheus.sh""") 
 //         }
 //       }
 //     }
 
-//     stage('8. Email Notification') {
-//       steps {
-//         mail bcc: 'oluwaseunatoki1@gmail.com', body: '''Build is Over. Check the application using the URL below:
-//          https://app.dominionsystem.org/addressbook-1.0
-//          Let me know if the changes look okay.
-//          Thanks,
-//          Atoktech Nigeria Limited,
-//          +44743874984''', 
-//          subject: 'Application was Successfully Deployed!!', to: 'oluwaseunatoki1@gmail.com'
-//       }
-//     }
-//   }
-// }
+// //     stage('8. Email Notification') {
+// //       steps {
+// //         mail bcc: 'oluwaseunatoki1@gmail.com', body: '''Build is Over. Check the application using the URL below:
+// //          https://app.dominionsystem.org/addressbook-1.0
+// //          Let me know if the changes look okay.
+// //          Thanks,
+// //          Atoktech Nigeria Limited,
+// //          +44743874984''', 
+// //          subject: 'Application was Successfully Deployed!!', to: 'oluwaseunatoki1@gmail.com'
+// //       }
+// //     }
+// //   }
+// // }
 
 pipeline {
     agent { 
@@ -188,10 +188,10 @@ stages {
         stage('7. Monitoring Solution Deployment in EKS') {
             steps {
                 withKubeConfig([caCertificate: '', credentialsId: 'kubeconfig', serverUrl: '']) {
-                    
                         sh "kubectl apply -k monitoring"
-                        sh "bash script/install_prometheus.sh"
-                    
+                        sh "chmod +x -R script
+                        sh("""script/install_helm.sh""") 
+                        sh("""script/install_prometheus.sh""")  
                 }
             }
         }
