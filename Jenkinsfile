@@ -189,7 +189,7 @@ stages {
             steps {
                 withKubeConfig([caCertificate: '', credentialsId: 'kubeconfig', serverUrl: '']) {
                         sh "kubectl apply -k monitoring"
-                        sh "chmod +x -R script
+                        //sh "chmod +x -R script
                         sh("""script/install_helm.sh""") 
                         sh("""script/install_prometheus.sh""")  
                 }
