@@ -18,7 +18,7 @@ spec:
   - host: #address.dominionsystem.org
     http:
       paths:
-      - path: /
+      - path: /static
         pathType: Prefix
         backend:
           service:
