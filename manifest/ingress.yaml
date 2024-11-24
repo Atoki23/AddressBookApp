@@ -11,13 +11,14 @@ metadata:
     alb.ingress.kubernetes.io/healthcheck-port: "8080"
     alb.ingress.kubernetes.io/healthcheck-path: /actuator/health # Adjust if needed
     alb.ingress.kubernetes.io/success-codes: "200"
+    alb.ingress.kubernetes.io/load-balancer-name: addressbook-alb
 spec:
   ingressClassName: alb
   rules:
-  - host: address.dominionsystem.org
+  - host: #address.dominionsystem.org
     http:
       paths:
-      - path: /static/
+      - path: /static
         pathType: Prefix
         backend:
           service:

@@ -119,13 +119,10 @@ pipeline {
 
     environment {
         SCANNER_HOME = tool('SonarQube-Scanner-6.2.1')
-        SONAR_HOST = 'http://18.130.222.66:9000'
+        SONAR_HOST = 'http://13.40.88.214:9000' 
         REGISTRY_URL = "${params.aws_account}.dkr.ecr.eu-west-2.amazonaws.com"
-         
     }
     
-
-
 stages {
         stage('1. Git Checkout') {
             steps {
@@ -134,7 +131,6 @@ stages {
                     url: 'https://github.com/Atoki23/AddressBookApp.git'
             }
         }
-
 
         stage('2. Build with Maven') { 
             steps {
